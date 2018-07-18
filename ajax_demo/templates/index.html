@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>this is index</h2>
+<button class="Ajax">ajax</button>
+
+<hr>
+<p class="content"></p>
+<input type="text" id="num1">+<input type="text" id="num2">=<input type="text" id="num3">
+<button class="cal">计算</button>
+
+<hr>
+<form>
+    user： <input type="text" id="user">
+    pwd: <input type="password" id = 'pwd'>
+    <input type="button" value="submit" class="login">
+    <span class="error"></span>
+</form>
+</body>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-2.1.4.min.js"></script>
+<script>
+    $('.Ajax').click(function () {
+        alert(123);
+        {#发送ajax请求#}
+        $.ajax({
+            url: '/test_ajax/',
+            type: 'get',
+            data: {},
+            success: function (data) {
+                $('.content').html(data);
+            }
+        })
+    });
+
+
+    $('.cal').click(function () {
+        $.ajax({
+            url: '/cal/',
+            type: 'post',
+            data: {'n1': $('#num1').val(), 'n2': $('#num2').val()},
+            success: function (data) {
+                $('#num3').val(data);
+            }
+        })
+    });
+
+//登陆验证
+    $('.login').click(function () {
+        $.ajax({
+            url: '/login/',
+            type:'post',
+            data:{
+                'user':$('#user').val(),
+                'pwd':$('#pwd').val()
+
+            },
+            success:function (data) {
+                {#console.log(data);   //{"user": null, "msg": "username or password error!"} json字符串#}
+                var d=JSON.parse(data) ;//反序列化  objects  {user: null, msg: "username or password error!"}
+                {#console.log(d)#}
+                if(d.user){
+                    location.href = 'http://www.baidu.com'
+                }
+                else {
+                    $(".error").html(d.msg).css({'color':'red','margin-lrft':'10px'})
+                }
+            }
+        })
+    })
+</script>
+</html>
