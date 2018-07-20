@@ -1,0 +1,93 @@
+1531965676064	geckodriver	INFO	geckodriver 0.21.0
+1531965676078	geckodriver	INFO	Listening on 127.0.0.1:49740
+1531965679186	mozrunner::runner	INFO	Running command: "c:\\program files\\Mozilla Firefox\\firefox.exe" "-marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\10755\\AppData\\Local\\Temp\\rust_mozprofile.Ew56CzOgtO2c"
+1531965682230	Marionette	INFO	Listening on port 49748
+1531965682252	Marionette	WARN	TLS certificate errors will be ignored for this session
+Unable to read VR Path Registry from C:\Users\10755\AppData\Local\openvr\openvrpaths.vrpath
+JavaScript error: https://s.w-x.co/weather/assets/main.57a7765185528f186820.js, line 1: ReferenceError: webpackJsonp is not defined
+JavaScript error: https://s.w-x.co/weather/assets/108.CanonicalUrl.1a62d944989ceb189ec7.js, line 1: ReferenceError: webpackJsonp is not defined
+JavaScript error: https://s.w-x.co/weather/assets/4.MetaTag.05a7f7642445f20941ab.js, line 1: ReferenceError: webpackJsonp is not defined
+JavaScript error: https://s.w-x.co/weather/assets/27.CobrandHeader.43670baa6c35634cba4c.js, line 1: ReferenceError: webpackJsonp is not defined
+JavaScript error: https://s.w-x.co/weather/assets/13.TwcHeader.4beaac8af7d9992e4646.js, line 1: ReferenceError: webpackJsonp is not defined
+JavaScript error: https://s.w-x.co/weather/assets/12.SavedLocations.63b391bda88e979c34ff.js, line 1: ReferenceError: webpackJsonp is not defined
+JavaScript error: https://s.w-x.co/weather/assets/26.LocalsuiteNav.eeb3a43ea0337ae72093.js, line 1: ReferenceError: webpackJsonp is not defined
+JavaScript error: https://s.w-x.co/weather/assets/92.SevereAlertBar.551c5758bc61aee4b00c.js, line 1: ReferenceError: webpackJsonp is not defined
+JavaScript error: https://s.w-x.co/weather/assets/64.LookingAhead.aaf2665aeac7272acfe6.js, line 1: ReferenceError: webpackJsonp is not defined
+JavaScript error: https://s.w-x.co/weather/assets/50.Taboola.9f93f908ebd1edb8d2b6.js, line 1: ReferenceError: webpackJsonp is not defined
+JavaScript error: https://s.w-x.co/weather/assets/52.Promo.1bc9a55bb3a8671c2f87.js, line 1: ReferenceError: webpackJsonp is not defined
+JavaScript error: https://s.w-x.co/weather/assets/14.Messages.9093005a3005a10a133d.js, line 1: ReferenceError: webpackJsonp is not defined
+JavaScript error: https://weather.com/zh-CN/weather/today/l/CHXX0008:1:CH, line 16: ReferenceError: osdlfm is not defined
+JavaScript error: https://weather.com/zh-CN/weather/today/l/CHXX0008:1:CH, line 16: ReferenceError: osdlfm is not defined
+JavaScript error: https://weather.com/zh-CN/weather/today/l/CHXX0008:1:CH, line 16: ReferenceError: osdlfm is not defined
+Unable to read VR Path Registry from C:\Users\10755\AppData\Local\openvr\openvrpaths.vrpath
+[Parent 12648, Gecko_IOThread] WARNING: pipe error: 109: file z:/build/build/src/ipc/chromium/src/chrome/common/ipc_channel_win.cc, line 346
+[Parent 12648, Gecko_IOThread] WARNING: pipe error: 109: file z:/build/build/src/ipc/chromium/src/chrome/common/ipc_channel_win.cc, line 346
+Unable to read VR Path Registry from C:\Users\10755\AppData\Local\openvr\openvrpaths.vrpath
+[Child 4880, Chrome_ChildThread] WARNING: pipe error: 109: file z:/build/build/src/ipc/chromium/src/chrome/common/ipc_channel_win.cc, line 346
+[Child 4880, Chrome_ChildThread] WARNING: pipe error: 109: file z:/build/build/src/ipc/chromium/src/chrome/common/ipc_channel_win.cc, line 346
+[Parent 12648, Gecko_IOThread] WARNING: pipe error: 109: file z:/build/build/src/ipc/chromium/src/chrome/common/ipc_channel_win.cc, line 346
+[Child 4356, Chrome_ChildThread] WARNING: pipe error: 109: file z:/build/build/src/ipc/chromium/src/chrome/common/ipc_channel_win.cc, line 346
+
+###!!! [Child][MessageChannel] Error: (msgtype=0x160001,name=PBrowser::Msg_AsyncMessage) Closed channel: cannot send/recv
+
+JavaScript error: chrome://browser/content/tab-content.js, line 282: NS_ERROR_UNEXPECTED: 
+
+###!!! [Child][MessageChannel] Error: (msgtype=0x160001,name=PBrowser::Msg_AsyncMessage) Closed channel: cannot send/recv
+
+JavaScript error: chrome://browser/content/content.js, line 963: NS_ERROR_UNEXPECTED: 
+
+###!!! [Parent][MessageChannel] Error: (msgtype=0x16008C,name=PBrowser::Msg_UpdateNativeWindowHandle) Closed channel: cannot send/recv
+
+
+###!!! [Parent][MessageChannel] Error: (msgtype=0x16007F,name=PBrowser::Msg_Destroy) Closed channel: cannot send/recv
+
+
+###!!! [Parent][MessageChannel] Error: (msgtype=0x16008C,name=PBrowser::Msg_UpdateNativeWindowHandle) Closed channel: cannot send/recv
+
+
+###!!! [Parent][MessageChannel] Error: (msgtype=0x16007F,name=PBrowser::Msg_Destroy) Closed channel: cannot send/recv
+
+
+###!!! [Parent][MessageChannel] Error: (msgtype=0x16008C,name=PBrowser::Msg_UpdateNativeWindowHandle) Closed channel: cannot send/recv
+
+
+###!!! [Parent][MessageChannel] Error: (msgtype=0x16007F,name=PBrowser::Msg_Destroy) Closed channel: cannot send/recv
+
+
+###!!! [Parent][MessageChannel] Error: (msgtype=0x16008C,name=PBrowser::Msg_UpdateNativeWindowHandle) Closed channel: cannot send/recv
+
+
+###!!! [Parent][MessageChannel] Error: (msgtype=0x16007F,name=PBrowser::Msg_Destroy) Closed channel: cannot send/recv
+
+
+###!!! [Parent][MessageChannel] Error: (msgtype=0x16008C,name=PBrowser::Msg_UpdateNativeWindowHandle) Closed channel: cannot send/recv
+
+
+###!!! [Parent][MessageChannel] Error: (msgtype=0x16007F,name=PBrowser::Msg_Destroy) Closed channel: cannot send/recv
+
+[Child 4356, Chrome_ChildThread] WARNING: pipe error: 109: file z:/build/build/src/ipc/chromium/src/chrome/common/ipc_channel_win.cc, line 346
+[Parent 12648, Gecko_IOThread] WARNING: pipe error: 109: file z:/build/build/src/ipc/chromium/src/chrome/common/ipc_channel_win.cc, line 346
+
+###!!! [Child][MessageChannel] Error: (msgtype=0x160001,name=PBrowser::Msg_AsyncMessage) Closed channel: cannot send/recv
+
+JavaScript error: chrome://browser/content/tab-content.js, line 282: NS_ERROR_UNEXPECTED: 
+
+###!!! [Child][MessageChannel] Error: (msgtype=0x160001,name=PBrowser::Msg_AsyncMessage) Closed channel: cannot send/recv
+
+JavaScript error: chrome://browser/content/content.js, line 963: NS_ERROR_UNEXPECTED: 
+
+###!!! [Child][MessageChannel] Error: (msgtype=0x160001,name=PBrowser::Msg_AsyncMessage) Closed channel: cannot send/recv
+
+JavaScript error: chrome://browser/content/tab-content.js, line 282: NS_ERROR_UNEXPECTED: 
+
+###!!! [Child][MessageChannel] Error: (msgtype=0x160001,name=PBrowser::Msg_AsyncMessage) Closed channel: cannot send/recv
+
+JavaScript error: chrome://browser/content/content.js, line 963: NS_ERROR_UNEXPECTED: 
+
+###!!! [Child][MessageChannel] Error: (msgtype=0x160001,name=PBrowser::Msg_AsyncMessage) Closed channel: cannot send/recv
+
+JavaScript error: chrome://browser/content/tab-content.js, line 282: NS_ERROR_UNEXPECTED: 
+
+###!!! [Child][MessageChannel] Error: (msgtype=0x160001,name=PBrowser::Msg_AsyncMessage) Closed channel: cannot send/recv
+
+JavaScript error: chrome://browser/content/content.js, line 963: NS_ERROR_UNEXPECTED: 
