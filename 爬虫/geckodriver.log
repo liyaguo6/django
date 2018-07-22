@@ -91,3 +91,5 @@ JavaScript error: chrome://browser/content/tab-content.js, line 282: NS_ERROR_UN
 ###!!! [Child][MessageChannel] Error: (msgtype=0x160001,name=PBrowser::Msg_AsyncMessage) Closed channel: cannot send/recv
 
 JavaScript error: chrome://browser/content/content.js, line 963: NS_ERROR_UNEXPECTED: 
+1532090729882	geckodriver	INFO	geckodriver 0.21.0
+1532090729956	geckodriver	INFO	Listening on 127.0.0.1:52715

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+</head>
+<body>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-lg-offset-3">
+            <hr>
+            <form action="" method="post">
+                {% csrf_token %}
+                <div>
+                    <label for="user">用户名</label>
+                    <p><input type="text" name="name" id="name"></p>
+                </div>
+                <div>
+                    <label for="pwd">密码</label>
+                    <p><input type="password" name="pwd" id="pwd"></p>
+                </div>
+                <div>
+                    <label for="r_pwd">确认密码</label>
+                    <p><input type="password" name="r_pwd" id="r_pwd"></p>
+                </div>
+                <div>
+                    <label for="email">邮箱</label>
+                    <p><input type="text" name="email" id="email"></p>
+                </div>
+                <input type="submit">
+            </form>
+            <hr>
+            <form action="" method="post">
+                {% csrf_token %}
+                {% for form in forms %}
+                    <p>
+                        {{ form.label }}
+                        {{ form }}
+                        <span>{{ form.errors.0 }}</span>
+                        {% if form.name == 'r_pwd' %}
+                            <span>{{ errors_all.0 }}</span>
+                        {% endif %}
+
+                    </p>
+                {% endfor %}
+
+                <input type="submit">
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
