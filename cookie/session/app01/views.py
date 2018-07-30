@@ -1,7 +1,7 @@
 from django.shortcuts import render,HttpResponse,redirect
-
+from app01 import models
 # Create your views here.
-from  app01 import models
+
 def login(request):
     if request.method == 'POST':
         user = request.POST.get('user')
@@ -39,6 +39,7 @@ def login_session(request):
         if ret :
             request.session['is_login'] = True
             request.session['username'] = user
+
             """
             1· 生成随机字符串  123
             2 · response.set_cookie('sessionid','123'
@@ -49,15 +50,28 @@ def login_session(request):
             # import datetime
             # date=datetime.datetime(year=2019,month=7,day=23,hour=13,minute=28)
             # response.set_cookie('username',user,expires=date,path='/index/')
-            return HttpResponse('登陆成功')
+            return redirect('/index_session/')
     return render(request,'login.html')
 
 
 def index_session(request):
     is_login=request.session.get('is_login')
     if is_login:
-
+        import datetime
+        now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        last_time = request.session.get('last_time', "")
+        request.session['last_time'] = now
         username=request.session.get('username')
-        return render(request,'index.html',{'username':username})
+        return render(request,'index.html',{'username':username,'last_time':last_time})
     else:
         return  redirect('/login_session/')
+
+def logout(request):
+
+    # del request.session['is_login']
+    request.session.flush()
+    """
+    str = request.session.get('sessionid')
+    django_session.objects.filter(session_key = str).delete()
+    """
+    return redirect('/login_session/')
