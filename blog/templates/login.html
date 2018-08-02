@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    {#    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"#}
+    {#          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">#}
+    {% load static %}
+    <link href="{% static '/blog01/bootstrap/css/bootstrap.css' %}" rel="stylesheet">
+    {#    <link href="{% static '/blog01/jquery-3.2.1.min.js' %}" rel="stylesheet">#}
+</head>
+<body>
+<h3>登陆页面</h3>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-lg-offset-3">
+            <form>
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="user">用户名</label>
+                    <input type="text" id="user" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="pwd">密码</label>
+                    <input type="password" id="pwd" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="pwd">验证码</label>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input type="text" class="valid_code form-control" id="valid_code">
+                        </div>
+                        <div class="col-md-6">
+                            <img src='{% url 'get_validCode_img' %}'
+                                 alt="" width="270" height="40" id="vaid_code_img">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <input type="button" class="btn btn-default login_btn" id="login_btn" value="登陆">
+                    <span class="error"></span>
+                    <a href="{% url 'register' %}" class="btn btn-success pull-right">注册</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src={% static 'blog01/jquery-3.2.1.min.js' %}></script>
+{#    //验证码图片刷新#}
+<script>
+    $('#vaid_code_img').click(function () {
+        $(this)[0].src += '?'
+    });
+
+    {#登陆验证#}
+
+
+    $("#login_btn").click(function () {
+        $.ajax({
+            url: '/login/',
+            type: 'post',
+            data: {
+                user: $("#user").val(),
+                pwd: $('#pwd').val(),
+                valid_code: $('#valid_code').val(),
+                csrfmiddlewaretoken: $("[name='csrfmiddlewaretoken']").val()
+            },
+            success: function (data) {
+                //回调函数，视图函数return返回的值
+                if (data.user) {
+                    location.href = '{% url 'index' %}'
+                }    //前端页面跳转
+                else {
+                    $('.error').text(data.msg).css({'color': 'red', 'margin-left': '10px'});
+                    setTimeout(function () {
+                        $('.error').text("")
+                    }, 1000)    //1s后清空错误信息
+                }
+            }
+        })
+    })
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,42 @@
+1.需求分析
+    （1）基于用户认证组件和Ajax实现登陆验证（图片验证）
+            a) PIL模块应用
+            b）ajax请求/setTimeout/location.href/csrfmiddlewaretoken/success: function (data)
+            c) 利用django自带的用户认证组件/ user= auth.authenticate(username=user,password=pwd)/auth.login(request,user)
+            d)  request.session['vaild_code_str'] = vaild_code_str/ vaild_code_str = request.session.get('vaild_code_str')
+    （2）基于forms组件和ajax实现注册功能
+            a) forms组件 设计页面/
+            b) 点击头像==点击inputbiaoqian
+               头像预览 /获取文件对象/ 获取文件对象路径 /修改img src属性
+            c) 错误信息展示
+                错误信息展示（form.errors)--> ajax.success （data.msg）循环展示错误信息
+                局部钩子与全局钩子校验
+                user字段不能重复注册
+                两次密码不一致
+            d) 数据校验通过
+                生成一条记录保存到数据库中
+            e) FileField 与IMgeFiled (必须要接受文件对象）
+                avatar_obj=request.FILES.get("avatar")
+                Userinfo.objects.create_user(username=user,password=pwd,email=email,telephone=telephone,avatar = avatar_obj)
+            h) media配置(MEDIA_ROOT)
+               settings: MEDIA_ROOT=os.path.join(BASE_DIR,"media")
+               用户上传的media文件下
+            g) media配置(MEDIA_ROOT)
+
+    （3）设计系统首页（文章列表渲染）
+    （4）个人站点页面
+    （5）文章详情页
+    （6）文章点赞功能
+    （7）文章评论功能
+            ——二级评论
+    （8）后台管理页面
+            文本编辑框
+            防止xx攻击
+
+ 2.设计表结构
+
+ 3 按着每一个功能分别进行开发
+
+ 4 功能测试
+
+ 5 项目部署上线

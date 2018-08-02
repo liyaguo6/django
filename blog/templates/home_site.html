@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+       {% load static %}
+    <link href="{% static '/blog01/bootstrap/css/bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static '/blog01/css/mycss.css' %}" rel="stylesheet">
+    <script src={% static 'blog01/jquery-3.2.1.min.js' %}></script>
+    <script src={% static '/blog01/bootstrap/js/bootstrap.min.js' %}></script>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .header{
+            width: 100%;
+            height: 60px;
+            background-color: blue;
+        }
+        .header .title{
+            font-size: 20px;
+            font-weight: 100;
+            line-height: 60px;
+            color: white;
+            margin-left: 20px;
+        }
+        .backend{
+            float: right;
+            color: white;
+            text-decoration: none;
+            margin-right: 20px;
+            margin-top: 10px;
+            font-size: 15px;
+        }
+         .pub_info{
+            margin-top: 10px;
+             color: darkgray;
+        }
+
+        .pub_info .glyphicon-comment{
+            vertical-align: -1px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="header">
+    <div class="container1">
+        <p class="title">
+            <span>{{ blog.title }}</span>
+            <span><a href="" class="backend">管理</a></span>
+        </p>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-3">
+              <div class="panel panel-warning">
+                    <div class="panel-heading"> 我的标签</div>
+                    <div class="panel-body">
+                        {% for tag in tag_list %}
+                            <p>{{ tag.0 }}({{ tag.1 }})</p>
+                        {% endfor %}
+
+                    </div>
+                </div>
+                <div class="panel panel-info">
+                    <div class="panel-heading">随笔分类</div>
+                    <div class="panel-body">
+                        {% for cate in cate_list %}
+                            <p>{{ cate.0 }}({{ cate.1}})</p>
+                        {% endfor %}
+
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">归档</div>
+                    <div class="panel-body">
+                        {% for date in date_list %}
+                            <p>{{ date.0 }}({{ date.1}})</p>
+                        {% endfor %}
+
+                    </div>
+                </div>
+        </div>
+        <div class="col-lg-9">
+            <div class="article_list">
+                {% for article in article_list %}
+                        <div class="article-item clearfix">
+                            <h5><a href="">{{ article.title }}</a></h5>
+                            <div class="article-desc">
+                                <span class="media-right">{{ article.desc}}</span>
+                            </div>
+                            <div class="small pub_info pull-right">
+                                &nbsp;&nbsp;<span>发布于&nbsp;&nbsp;{{ article.create_time|date:"Y-m-d H:i" }}</span>
+                                &nbsp;&nbsp;<span class="glyphicon glyphicon-comment">评论({{ article.comment_count }})</span>
+                                &nbsp;&nbsp;<span class="glyphicon glyphicon-thumbs-up">点赞({{ article.up_count}})</span>
+                                &nbsp;&nbsp;<span class="glyphicon glyphicon-thumbs-down">踩({{ article.down_count}})</span>
+                            </div>
+                        </div>
+                        <hr>
+                    {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
