@@ -27,11 +27,16 @@ urlpatterns = [
     #media路由
     url(r'media/(?P<path>.*)$',serve,{"document_root":settings.MEDIA_ROOT}),
     url(r'get_validCode_img/',views.get_validCode_img,name='get_validCode_img'),
+    url(r'^digg/', views.digg),
+    url(r'^comment/', views.comment),
 
 
     #关于个人站点url
-    url(r'^(?P<username>\w+)',views.home_site),
+    url(r'^(?P<username>\w+)/$',views.home_site),
+    # 个人站点的跳转
+    url(r'^(?P<username>\w+)/(?P<condition>tag|category|archive)/(?P<param>.*)/$',views.home_site,name='condition'),
 
+    url(r'^(?P<username>\w+)/articles/(?P<article_id>\d+)/$',views.article_detail,name='articles'),
 
 
 
