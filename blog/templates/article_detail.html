@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    {% csrf_token %}
+    <div class="alert-info">
+        <h4 class="text-center title">{{ article_obj.title }}</h4>
+         <div class="cont">
+            {{ article_obj.content|safe }}
+        </div>
+    </div>
+    <div class="clearfix">
+        <div id="div_digg">
+    <div class="diggit action">
+        <span class="diggnum" id="digg_count">{{ article_obj.up_count }}</span>
+    </div>
+    <div class="buryit action">
+        <span class="burynum" id="bury_count">{{ article_obj.down_count }}</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips" style="color: red;margin-top:10px "></div>
+    </div>
+    </div>
+
+    <div class="comments">
+            <p>评论列表</p>
+            <ul class="list-group comment_list">
+
+                {% for comment in comment_list %}
+                    <li class="list-group-item">
+                        <div>
+                            <a href=""># {{ forloop.counter }}楼</a> &nbsp;&nbsp;
+                            <span>{{ comment.create_time|date:"Y-m-d H:i" }}</span>&nbsp;&nbsp;
+                            <a href=""><span>{{ comment.user.username }}</span></a>
+                            <a class="pull-right reply_btn" username="{{ comment.user.username }}"
+                               comment_pk="{{ comment.pk }}">回复</a>
+                        </div>
+
+                        {% if comment.parent_comment_id %}
+                            <div class="pid_info well">
+                                <p>
+                                    {{ comment.parent_comment.user.username }}: {{ comment.parent_comment.content }}
+                                </p>
+                            </div>
+                        {% endif %}
+
+                        <div class="comment_con">
+                            <p>{{ comment.content }}</p>
+                        </div>
+
+                    </li>
+                {% endfor %}
+
+
+            </ul>
+            <p>发表评论</p>
+            <p>昵称：<input type="text" id="tbCommentAuthor" class="author" disabled="disabled" size="50"
+                         value="{{ request.user.username }}"></p>
+            <p>评论内容:</p>
+            <p><textarea name="" id="comment_content" cols="60" rows="10"></textarea></p>
+            <button class="btn btn-default comment_btn">提交按钮</button>
+    </div>
+    <script>
+        //点赞请求
+        $('#div_digg  .action').click(function () {
+            var is_up =$(this).hasClass("diggit");
+            $obj=$(this).children("span");
+            $.ajax({
+                url:"/digg/",
+                type:"post",
+                data:{
+                    "csrfmiddlewaretoken":$("[name='csrfmiddlewaretoken']").val(),
+                    "is_up":is_up,
+                    "article_id":"{{ article_obj.pk }}"
+
+                },
+
+                success:function (data) {
+                    if(data.state){
+                        var val= parseInt($obj.text());
+                        $obj.text(val+1);
+
+                        {#if(is_up){#}
+                        {#   var val= parseInt($obj.text());#}
+                        {#    $("#digg_count").text(val+1)#}
+
+                        {#else {#}
+                        {#    var val= parseInt($obj.text());#}
+                        {#    $("#bury_count").text(val+1)#}
+
+                    }
+                    else {
+                        if(data.handled){$("#digg_tips").html("您已经推荐过！")}
+                        else {$("#digg_tips").html("您已经反对过！")}
+                    }
+                    setTimeout(function () {
+                        {$("#digg_tips").html("")}
+                    },1000)
+                }
+            })
+        });
+        //评论请求
+        $(".comment_btn").click(function () {
+            var  pid ="";
+            var content = $('#comment_content').val();
+            $.ajax({
+                url:"/comment/",
+                type:'post',
+                data:{
+                    "csrfmiddlewaretoken":$("[name='csrfmiddlewaretoken']").val(),
+                    "article_id":"{{ article_obj.pk }}",
+                    "content":content,
+                    "pid":pid
+                },
+                success:function (data) {
+                   //清空评论框
+                    $("#comment_content").val("");
+                }
+            })
+        })
+    </script>
+{% endblock %}
