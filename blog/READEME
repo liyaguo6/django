@@ -25,13 +25,125 @@
 
     （3）设计系统首页（文章列表渲染）
     （4）个人站点页面
+			查询：
+			日期归档查询
+			   1    date_format
+
+					============date,time,datetime===========
+
+					create table t_mul_new(d date,t time,dt datetime);
+
+					insert into t_mul_new values(now(),now(),now());
+
+					select * from t_mul;
+
+
+					mysql> select * from t_mul;
+					+------------+----------+---------------------+
+					| d          | t        | dt                  |
+					+------------+----------+---------------------+
+					| 2017-08-01 | 19:42:22 | 2017-08-01 19:42:22 |
+					+------------+----------+---------------------+
+					1 row in set (0.00 sec)
+
+
+					select date_format(dt,"%Y/%m/%d") from t_mul;
+			   2  extra
+					extra(select=None, where=None, params=None, tables=None, order_by=None, select_params=None)
+
+					有些情况下，Django的查询语法难以简单的表达复杂的 WHERE 子句，对于这种情况, Django 提供了 extra() QuerySet修改机制 — 它能在 QuerySet生成的SQL从句中注入新子句
+
+					extra可以指定一个或多个 参数,例如 select, where or tables. 这些参数都不是必须的，但是你至少要使用一个!要注意这些额外的方式对不同的数据库引擎可能存在移植性问题.(因为你在显式的书写SQL语句),除非万不得已,尽量避免这样做
+
+					参数之select
+
+					The select 参数可以让你在 SELECT 从句中添加其他字段信息，它应该是一个字典，存放着属性名到 SQL 从句的映射。
+
+					queryResult=models.Article
+					　　　　　　　　　　　.objects.extra(select={'is_recent': "create_time > '2017-09-05'"})
+					结果集中每个 Entry 对象都有一个额外的属性is_recent, 它是一个布尔值，表示 Article对象的create_time 是否晚于2017-09-05.
+
+					练习：
+
+					in sqlite:
+
+						article_obj=models.Article.objects
+					　　　　　　　　　　　　　　.extra(select={"standard_time":"strftime('%%Y-%%m-%%d',create_time)"})
+					　　　　　　　　　　　　　　.values("standard_time","nid","title")
+						print(article_obj)
+						# <QuerySet [{'title': 'MongoDb 入门教程', 'standard_time': '2017-09-03', 'nid': 1}]>
+			   3  单表分组查询
+
+			   4 日期归档查询的方式2
+
+				   from django.db.models.functions import TruncMonth
+				   
+				   Sales.objects
+						.annotate(month=TruncMonth('timestamp'))  # Truncate to month and add to select list
+						.values('month')                          # Group By month
+						.annotate(c=Count('id'))                  # Select the count of the grouping
+						.values('month', 'c')                     # (might be redundant, haven't tested) select month and count    
+       
+	
     （5）文章详情页
-    （6）文章点赞功能
-    （7）文章评论功能
-            ——二级评论
-    （8）后台管理页面
-            文本编辑框
-            防止xx攻击
+		
+		 1  文章详情页的渲染
+		 2 点赞与踩灭
+		   点赞人即当前登录人
+
+		 3 评论
+
+		   评论人即当前登录人
+		   根评论：对文章的评论
+		   子评论：对评论的评论
+
+		   区别：是否有父评论
+  
+		   评论流程：
+
+			   1 构建样式
+			   2 提交根评论
+			   3 显示根评论
+					 －－－render显示
+
+					 －－－Ajax显示
+
+			   4 提交子评论
+			   5 显示子评论
+					 －－－render显示2
+
+					 －－－Ajax显示
+
+			   6 评论树的显示
+
+			   111
+				  444 
+					 555  
+			   222
+			   333
+
+		7 事务操作
+		   
+				from django.db import transaction
+			with transaction.atomic():
+				 pass
+
+
+		8 发送邮件
+
+			EMAIL_HOST = 'smtp.exmail.qq.com'  # 如果是 163 改成 smtp.163.com
+		  EMAIL_PORT = 465
+		  EMAIL_HOST_USER = ''           # 帐号
+		  EMAIL_HOST_PASSWORD = ''  # 密码
+		  DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+		  EMAIL_USE_SSL = True
+		（6）文章点赞功能
+		（7）文章评论功能
+				——二级评论
+		（8）后台管理页面
+							
+			1 富文本编辑器
+			2 beautifulSoup模块
 
  2.设计表结构
 
