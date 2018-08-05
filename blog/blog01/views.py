@@ -7,6 +7,7 @@ from blog01.models import *
 from blog01 import models
 from django.urls import reverse
 from django.db.models import Count
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -73,7 +74,7 @@ def index(request):
     return render(request, 'index.html', locals())
 
 
-def home_site(request,username,**kwargs):
+def home_site(request, username, **kwargs):
     """
     个人站点页面
     :param request:
@@ -98,8 +99,9 @@ def home_site(request,username,**kwargs):
         elif condition == 'tag':
             article_list = models.Article.objects.filter(user=user).filter(tags__title=param)
         else:
-            year,month = param.split("/")
-            article_list = models.Article.objects.filter(user=user).filter(create_time__year=year,create_time__month=month)
+            year, month = param.split("/")
+            article_list = models.Article.objects.filter(user=user).filter(create_time__year=year,
+                                                                           create_time__month=month)
     else:
         article_list = Article.objects.filter(user=user)
 
@@ -121,42 +123,39 @@ def home_site(request,username,**kwargs):
     # date_list = models.Article.objects.filter(user=user).extra(select={"y_m": "strftime('%%Y/%%m',create_time)"}).values(
     #     "y_m").annotate(c=Count("nid")).values_list("y_m","c")
     # print(ret)
-    #方式二
+    # 方式二
     # from django.db.models.functions import TruncMonth
     # ret=models.Article.objects.filter(user=user).annotate(month=TruncMonth('create_time')).values('month').annotate(c=Count('nid')).values('month','c')
     # print(ret)
     # print(kwargs)
-    return render(request, "home_site.html",locals())
+    return render(request, "home_site.html", locals())
 
 
-
-
-def article_detail(request,username,article_id):
+def article_detail(request, username, article_id):
     user = Userinfo.objects.filter(username=username).first()
     blog = user.blog
-    article_obj=models.Article.objects.filter(pk=article_id).first()
+    article_obj = models.Article.objects.filter(pk=article_id).first()
+    comment_list = models.Comment.objects.filter(article_id=article_id).all()
+    return render(request, 'article_detail.html', locals())
 
-
-
-
-    return render(request,'article_detail.html',locals())
 
 import json
 from django.db.models import F
 from django.http import JsonResponse
 
+
 def digg(request):
     print(request.POST)
     article_id = request.POST.get("article_id")
     is_up = json.loads(request.POST.get("is_up"))
-    #点赞人即当前登陆人
+    # 点赞人即当前登陆人
     user_id = request.user.pk
-    obj=models.ArticleUpDown.objects.filter(user_id=user_id,article_id=article_id).first()
-    response={"state":True,"msg":None}
+    obj = models.ArticleUpDown.objects.filter(user_id=user_id, article_id=article_id).first()
+    response = {"state": True, "msg": None}
     if not obj:
-        ard=models.ArticleUpDown.objects.create(user_id=user_id,article_id=article_id,is_up=is_up)
+        ard = models.ArticleUpDown.objects.create(user_id=user_id, article_id=article_id, is_up=is_up)
         if is_up:
-            models.Article.objects.filter(pk=article_id).update(up_count=F("up_count")+1)
+            models.Article.objects.filter(pk=article_id).update(up_count=F("up_count") + 1)
         else:
             models.Article.objects.filter(pk=article_id).update(down_count=F("down_count") + 1)
     else:
@@ -164,10 +163,92 @@ def digg(request):
         response["handled"] = obj.is_up
     return JsonResponse(response)
 
+
+from django.db import transaction
+
+
 def comment(request):
     article_id = request.POST.get('article_id')
     pid = request.POST.get('pid')
     content = request.POST.get("content")
     user_id = request.user.pk
-    comment_obj=models.Comment.objects.create(user_id=user_id,content=content,parent_content_id=pid,article_id=article_id)
-    return HttpResponse("ok")
+    article_obj = models.Article.objects.filter(pk=article_id).first()
+    with transaction.atomic():  # 事务
+        comment_obj = models.Comment.objects.create(user_id=user_id, content=content, parent_content_id=pid,
+                                                    article_id=article_id)
+        models.Article.objects.filter(pk=article_id).update(comment_count=F("comment_count") + 1)
+
+    comment_list = models.Comment.objects.filter(article_id=article_id).all()
+    response = {}
+    response["create_time"] = comment_obj.create_time.strftime("%Y-%m-%d %S")
+    response["username"] = request.user.username
+    response["content"] = content
+
+    # 发送邮件
+    from django.core.mail import send_mail
+    from blog import settings
+    # send_mail(
+    #     "您的文章%s新增了一条评论内容"%article_obj.title,
+    #     content,
+    #     settings.EMAIL_HOST_USER,
+    #     "文章作者邮箱 列表"
+    # )
+    import threading
+    # t=threading.Thread(target=send_mail,args=( "您的文章%s新增了一条评论内容"%article_obj.title,
+    #     content,
+    #     settings.EMAIL_HOST_USER,
+    #     "[1075543143@qq.com"))
+    # t.start()
+    return JsonResponse(response)
+
+
+def get_comment_tree(request):
+    article_id = request.GET.get("article_id")
+    ret = models.Comment.objects.filter(article_id=article_id).values("pk", "content", "parent_content_id")
+    ret = list(ret)
+    # [{},{},{}]
+    return JsonResponse(ret, safe=False)
+
+
+@login_required
+def cn_backend(request):
+    article_list = models.Article.objects.filter(user=request.user)
+
+    return render(request, "backend/backend.html", locals())
+from bs4 import BeautifulSoup
+
+@login_required
+def add_articles(request):
+    if request.method == 'POST':
+        title = request.POST.get("title")
+        content = request.POST.get("content")
+        #防止xss攻击,过滤script标签
+        soup = BeautifulSoup(content, 'html.parser')
+        for tag in soup.find_all():
+            if tag.name == "script":
+                tag.decompose()
+
+        desc = soup.text[0:150]
+        models.Article.objects.create(title=title, content=str(soup), user=request.user, desc=desc)
+    return render(request, 'backend/add_article.html')
+
+
+import os
+from blog import settings
+
+
+def upload(requet):
+    """"
+    文件编辑器上传的图片
+    """
+    img = requet.FILES.get("upload_img")
+    path = os.path.join(settings.MEDIA_ROOT, "add_article_img", img.name)
+    with open(path, 'wb') as f:
+        for line in img:
+            f.write(line)
+    response = {
+        "error": 0,
+        "url": "/media/add_article_img/{}".format(img.name)
+    }
+    import json
+    return HttpResponse(json.dumps(response))

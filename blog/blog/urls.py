@@ -29,15 +29,18 @@ urlpatterns = [
     url(r'get_validCode_img/',views.get_validCode_img,name='get_validCode_img'),
     url(r'^digg/', views.digg),
     url(r'^comment/', views.comment),
+    url(r'^get_comment_tree/', views.get_comment_tree),
+    url(r'^upload/', views.upload),
 
-
+    # 后台管理url
+    url(r"cn_backend/$",views.cn_backend,name="cn_backend"),
+    url(r"add_article/$",views.add_articles),
     #关于个人站点url
     url(r'^(?P<username>\w+)/$',views.home_site),
     # 个人站点的跳转
     url(r'^(?P<username>\w+)/(?P<condition>tag|category|archive)/(?P<param>.*)/$',views.home_site,name='condition'),
 
     url(r'^(?P<username>\w+)/articles/(?P<article_id>\d+)/$',views.article_detail,name='articles'),
-
 
 
     url(r'',views.index,name='index'),

@@ -1,9 +1,8 @@
 {% extends 'base.html' %}
 
-
 {% block content %}
     {% csrf_token %}
-    <div class="alert-info">
+    <div class="article_info">
         <h4 class="text-center title">{{ article_obj.title }}</h4>
          <div class="cont">
             {{ article_obj.content|safe }}
@@ -22,10 +21,38 @@
     </div>
     </div>
 
-    <div class="comments">
+    <div class="comments list-group">
+            <p class="tree_btn">评论树</p>
+            <div class="comment_tree">
+
+            </div>
+            <script>
+                {#$(".tree_btn").click(function () {#}
+                    $.ajax({
+                        url:"/get_comment_tree/",
+                        type:"get",
+                        data:{
+                            "article_id":"{{ article_obj.pk }}"
+                        },
+                        success:function (data) {
+                           $.each(data,function (index,comment_obj) {
+                               var pk = comment_obj.pk;
+                               var content = comment_obj.content;
+                               var parent_comment_id = comment_obj.parent_content_id;
+                                var s=' <div class="comment_item comment_con" comment_id='+pk+'><span>'+content+'</span></div>';
+                               if(!parent_comment_id){
+                                   $(".comment_tree").append(s)
+                               }else {
+                                   $("[comment_id="+parent_comment_id +"]").append(s)
+                               }
+                           })
+                        }
+                    })
+
+
+            </script>
             <p>评论列表</p>
             <ul class="list-group comment_list">
-
                 {% for comment in comment_list %}
                     <li class="list-group-item">
                         <div>
@@ -35,11 +62,10 @@
                             <a class="pull-right reply_btn" username="{{ comment.user.username }}"
                                comment_pk="{{ comment.pk }}">回复</a>
                         </div>
-
-                        {% if comment.parent_comment_id %}
+                        {% if comment.parent_content_id %}
                             <div class="pid_info well">
                                 <p>
-                                    {{ comment.parent_comment.user.username }}: {{ comment.parent_comment.content }}
+                                    {{ comment.parent_content.user.username }}: {{ comment.parent_content.content }}
                                 </p>
                             </div>
                         {% endif %}
@@ -50,8 +76,6 @@
 
                     </li>
                 {% endfor %}
-
-
             </ul>
             <p>发表评论</p>
             <p>昵称：<input type="text" id="tbCommentAuthor" class="author" disabled="disabled" size="50"
@@ -100,9 +124,13 @@
             })
         });
         //评论请求
+        var  pid ="";
         $(".comment_btn").click(function () {
-            var  pid ="";
             var content = $('#comment_content').val();
+            if(pid){
+                var index = content.indexOf('\n');
+                    content=content.slice(index+1)
+            }
             $.ajax({
                 url:"/comment/",
                 type:'post',
@@ -113,10 +141,40 @@
                     "pid":pid
                 },
                 success:function (data) {
+                    console.log(data);
+                       var create_time= data.create_time;
+                       var content= data.content;
+                       var username= data.username;
+
+                        var s ="<li class='list-group-item'><div>"+
+            "<span>"+create_time+"</span>&nbsp;&nbsp;<a href=''><span>"+ username+"</span></a></div>"+
+             "<div class='comment_con'><p>"+content+"</p></div></div>";
+
+
+                    $("ul.comment_list").append(s);
+
                    //清空评论框
                     $("#comment_content").val("");
+
                 }
             })
+        });
+
+        //回复按钮事件
+        $('.reply_btn').click(function () {
+            $("#comment_content").focus();
+            var val ="@"+$(this).attr('username')+"\n";
+             pid = $(this).attr("comment_pk");
+            console.log(pid);
+            $("#comment_content").val(val);
+            {#$.ajax({#}
+            {#    url:"/reply/",#}
+            {#    type:'post',#}
+            {#    data:{},#}
+            {#    success:function (data) {#}
+            {#        #}
+            {#    }#}
+
         })
     </script>
 {% endblock %}

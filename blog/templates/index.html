@@ -98,7 +98,7 @@
                 <div class="article_list">
                     {% for article in article_list %}
                         <div class="article-item">
-                            <h5><a href="">{{ article.title }}</a></h5>
+                            <h5><a href="{% url 'articles' article.user.username  article.pk %}">{{ article.title }}</a></h5>
                             <div class="article-desc">
                                 <span class="media-left">
                                     <a href=""><img width="56" height="60" src="media/{{ article.user.avatar }}" alt=""></a>
