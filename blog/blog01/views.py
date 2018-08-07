@@ -20,6 +20,7 @@ def login(request):
         pwd = request.POST.get('pwd')
         vaild_code = request.POST.get('valid_code')
         vaild_code_str = request.session.get('vaild_code_str')
+        print(request.session)
         if vaild_code_str.upper() == vaild_code.upper():
             user = auth.authenticate(username=user, password=pwd)
             if user:
