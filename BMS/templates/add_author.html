@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>添加作者信息</title>
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="page-header">
+            <h1>BMS图书管理系统
+                <small>添加作者</small>
+            </h1>
+        </div>
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">添加作者</h3>
+            </div>
+            <div class="panel-body">
+                <form class="form-horizontal" action="{% url 'add_author' %}" method="post">
+
+                    <div class="form-group">
+                        <label for="publisher_name" class="col-sm-2 control-label">作者姓名</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control"
+                                   name="author_name"
+                                   id="publisher_name" placeholder="作者姓名">
+                        </div>
+                    </div>
+{#                    <div class="form-group">#}
+{#                        <label for="publisher_address" class="col-sm-2 control-label">作者生日</label>#}
+{#                        <div class="col-sm-10">#}
+{#                            <input type="date" class="form-control"#}
+{#                                   name="author_birthday"#}
+{#                                   id="publisher_address" placeholder="作者生日">#}
+{#                        </div>#}
+{#                    </div>#}
+
+                    <div class="form-group">
+                        <label for="class_name" class="col-sm-2 control-label">作品</label>
+                        <div class="col-sm-10">
+                            <select name="books_id" class="form-control" multiple>
+                                {% for books in books_list %}
+                                    <option value="{{ books.id }}">{{ books.title }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <input type="submit" class="btn btn-primary" value="提交">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+<script src="/static/jquery-3.2.1.min.js"></script>
+<script src="/static/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>
